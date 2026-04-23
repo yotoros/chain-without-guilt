@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Цепочка без вины — Трекер привычек</title>
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --primary-dark: #3730a3;
+            --bg: #f8fafc;
+            --text: #1e293b;
+            --text-light: #64748b;
+            --card-bg: #ffffff;
+            --radius: 12px;
+            --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            line-height: 1.6;
+            color: var(--text);
+            background: var(--bg);
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        section {
+            padding: 60px 0;
+        }
+
+        h1,
+        h2,
+        h3 {
+            margin-bottom: 16px;
+            line-height: 1.2;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+        }
+
+        h2 {
+            font-size: 2rem;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        p {
+            margin-bottom: 16px;
+            color: var(--text-light);
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            background: var(--primary);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: 0.2s;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background: var(--primary-dark);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+        }
+
+        .btn-outline:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .hero {
+            background: linear-gradient(135deg, #e0e7ff 0%, #f8fafc 100%);
+            text-align: center;
+            padding: 100px 0;
+        }
+
+        .hero h1 {
+            margin-bottom: 12px;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto 24px;
+        }
+
+        .logo {
+            font-weight: 800;
+            font-size: 1.5rem;
+            color: var(--primary);
+            margin-bottom: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .logo span {
+            background: var(--primary);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 6px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            padding: 24px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+        }
+
+        .card h3 {
+            color: var(--primary);
+            margin-bottom: 8px;
+        }
+
+        .survey {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            padding: 40px;
+            text-align: center;
+            margin-top: 40px;
+            box-shadow: var(--shadow);
+        }
+
+        footer {
+            background: var(--text);
+            color: white;
+            text-align: center;
+            padding: 40px 0;
+        }
+
+        footer p {
+            color: #94a3b8;
+        }
+
+        footer a {
+            color: white;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            h2 {
+                font-size: 1.5rem;
+            }
+
+            .hero {
+                padding: 60px 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 1. Первый экран -->
+    <section class="hero">
+        <div class="container">
+            <div class="logo"><span>Цепочка без вины</span></div>
+            <h1>Трекер привычек, который не наказывает за пропуски</h1>
+            <p>Антиперфекционистский подход: прогресс не обнуляется, а адаптируется. Развивайте привычки без чувства
+                вины.</p>
+            <a href="#survey" class="btn">Пройти опрос</a>
+            <a href="#about" class="btn btn-outline" style="margin-left: 10px;">Узнать больше</a>
+        </div>
+    </section>
+
+    <!-- 2. О проекте -->
+    <section id="about">
+        <div class="container">
+            <h2>О проекте</h2>
+            <p>«Цепочка без вины» — трекер привычек, созданный для людей, которые устали от жёстких систем. Вместо
+                обнуления прогресса после одного пропущенного дня мы используем рейтинг стабильности. Вы видите свой
+                прогресс, но не теряете мотивацию из-за ошибок.</p>
+            <p>Проект создан для студентов и перфекционистов, чтобы снизить барьер входа в формирование привычек и
+                сделать процесс устойчивым.</p>
+        </div>
+    </section>
+
+    <!-- 3. Проблема -->
+    <section id="problem">
+        <div class="container">
+            <h2>Почему обычные трекеры не работают?</h2>
+            <div class="grid">
+                <div class="card">
+                    <h3>Обнуление прогресса</h3>
+                    <p>Один пропущенный день сбрасывает всю цепочку. Это демотивирует и вызывает чувство неудачи.</p>
+                </div>
+                <div class="card">
+                    <h3>Страх начать</h3>
+                    <p>Перфекционисты и студенты боятся запускать привычки, зная, что система накажет их за ошибку.</p>
+                </div>
+                <div class="card">
+                    <h3>Выгорание</h3>
+                    <p>Жёсткие требования ведут к быстрому отказу от привычки вместо её постепенного формирования.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. Решение -->
+    <section id="solution">
+        <div class="container">
+            <h2>Как мы это решаем</h2>
+            <div class="grid">
+                <div class="card">
+                    <h3>Рейтинг стабильности</h3>
+                    <p>Вместо обнуления прогресс снижается плавно. Вы всегда видите свой уровень, а не ноль.</p>
+                </div>
+                <div class="card">
+                    <h3>Мягкая система</h3>
+                    <p>Пропуск — это не провал, а часть процесса. Трекер адаптируется под ваш ритм жизни.</p>
+                </div>
+                <div class="card">
+                    <h3>Прозрачная аналитика</h3>
+                    <p>Наглядные графики показывают динамику, а не просто галочки. Мотивация растёт, а не падает.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 5. Для кого -->
+    <section id="audience">
+        <div class="container">
+            <h2>Для кого этот проект</h2>
+            <div class="grid">
+                <div class="card">
+                    <h3>Студенты</h3>
+                    <p>Боятся начать из-за страха не справиться. Мягкая система даёт уверенность и безопасное
+                        пространство для экспериментов.</p>
+                </div>
+                <div class="card">
+                    <h3>Перфекционисты</h3>
+                    <p>Бросают трекеры после одного пропуска. Наш подход сохраняет прогресс и убирает чувство вины.</p>
+                </div>
+                <div class="card">
+                    <h3>Все, кто ценит баланс</h3>
+                    <p>Те, кто хочет развивать привычки без насилия над собой и с уважением к собственному ритму.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 6. Ключевые возможности -->
+    <section id="features">
+        <div class="container">
+            <h2>Ключевые возможности</h2>
+            <div class="grid">
+                <div class="card">
+                    <h3>Без обнуления</h3>
+                    <p>Прогресс сохраняется даже после пропусков.</p>
+                </div>
+                <div class="card">
+                    <h3>Плавное снижение рейтинга</h3>
+                    <p>Честная оценка стабильности без резких падений.</p>
+                </div>
+                <div class="card">
+                    <h3>Визуализация прогресса</h3>
+                    <p>Наглядные графики и метрики мотивации.</p>
+                </div>
+                <div class="card">
+                    <h3>Мягкие напоминания</h3>
+                    <p>Без давления и чувства долга.</p>
+                </div>
+                <div class="card">
+                    <h3>Адаптивные цели</h3>
+                    <p>Настройка под ваш график и ресурсы.</p>
+                </div>
+                <div class="card">
+                    <h3>Сообщество поддержки</h3>
+                    <p>Обмен опытом и взаимная мотивация.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 7. Блок анкеты -->
+    <section id="survey">
+        <div class="container">
+            <div class="survey">
+                <h2>Помогите нам сделать трекер лучше</h2>
+                <p>Пройдите короткий опрос. Ваши ответы помогут нам проверить гипотезы и создать продукт, который
+                    действительно работает для вас.</p>
+                <!-- ЗАМЕНИТЕ # НА ССЫЛКУ ВАШЕЙ ФОРМЫ -->
+                <a href="https://forms.gle/f8y4wbhehn8PGFG89" target="_blank" class="btn">Пройти анкету</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- 8. Контакты / Финальный экран -->
+    <footer>
+        <div class="container">
+            <h3>Цепочка без вины</h3>
+            <p>Формируйте привычки без чувства вины. Прогресс важнее идеальности.</p>
+            <!-- ЗАМЕНИТЕ # НА ССЫЛКУ ВАШЕЙ ФОРМЫ -->
+            <a href="https://forms.gle/f8y4wbhehn8PGFG89" target="_blank" class="btn" style="margin-top: 16px;">Пройти
+                опрос</a>
+            <p style="margin-top: 30px;">
+                <a href="mailto:your@email.com">your@email.com</a> |
+                <a href="#">Telegram</a>
+            </p>
+            <p style="margin-top: 20px; font-size: 0.8rem; opacity: 0.7;">© 2026 Цепочка без вины. Все права защищены.
+            </p>
+        </div>
+    </footer>
+</body>
+
+</html>
