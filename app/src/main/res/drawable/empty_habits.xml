@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="200dp"
+    android:height="200dp"
+    android:viewportWidth="200"
+    android:viewportHeight="200">
+
+    <!-- Фон - два листа бумаги -->
+    <path
+        android:fillColor="#1f1f35"
+        android:pathData="M60,50 L100,50 L100,150 L60,150 Z"/>
+    <path
+        android:fillColor="#2d2d44"
+        android:pathData="M100,50 L140,50 L140,150 L100,150 Z"/>
+
+    <!-- Линии на бумаге -->
+    <path
+        android:fillColor="#3d3d5c"
+        android:pathData="M70,70 L90,70 L90,75 L70,75 Z"/>
+    <path
+        android:fillColor="#3d3d5c"
+        android:pathData="M70,85 L90,85 L90,90 L70,90 Z"/>
+    <path
+        android:fillColor="#3d3d5c"
+        android:pathData="M70,100 L90,100 L90,105 L70,105 Z"/>
+
+    <path
+        android:fillColor="#4d4d6c"
+        android:pathData="M110,70 L130,70 L130,75 L110,75 Z"/>
+    <path
+        android:fillColor="#4d4d6c"
+        android:pathData="M110,85 L130,85 L130,90 L110,90 Z"/>
+
+    <!-- Плюс в центре -->
+    <path
+        android:fillColor="#7c3aed"
+        android:pathData="M90,90 L110,90 L110,100 L100,100 L100,110 L90,110 L90,100 L80,100 L80,90 L90,90 Z"/>
+</vector>

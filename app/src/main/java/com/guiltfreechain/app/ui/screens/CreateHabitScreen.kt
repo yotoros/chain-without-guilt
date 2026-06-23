@@ -2,10 +2,9 @@ package com.guiltfreechain.app.ui.screens
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.guiltfreechain.app.ui.theme.PrimaryTeal
@@ -13,99 +12,57 @@ import com.guiltfreechain.app.ui.theme.PrimaryTeal
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CreateHabitScreen(
-    onSave: () -> Unit,
+    onSave: (String, String, String) -> Unit,
     onBack: () -> Unit
 ) {
     var title by remember { mutableStateOf("") }
-    var frequency by remember { mutableStateOf("daily") }
+    var frequency by remember { mutableStateOf("Ежедневно") }
     var note by remember { mutableStateOf("") }
 
     Scaffold(
-        containerColor = MaterialTheme.colorScheme.surface,
-        topBar = {
-            TopAppBar(
-                title = { Text("Новая привычка") },
-                navigationIcon = {
-                    IconButton(onClick = onBack) {
-                        Text("←", fontSize = MaterialTheme.typography.titleLarge.fontSize)
-                    }
-                }
-            )
-        }
+        containerColor = MaterialTheme.colorScheme.surface
     ) { padding ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(padding)
-                .padding(horizontal = 20.dp)
+                .padding(24.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
+            // Заголовок
             Text(
-                text = "Никакого давления. Просто начните.",
-                style = MaterialTheme.typography.bodyLarge,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
+                text = "Создание привычки",
+                style = MaterialTheme.typography.headlineMedium,
+                color = MaterialTheme.colorScheme.onSurface
             )
 
-            Spacer(modifier = Modifier.height(32.dp))
+            Spacer(modifier = Modifier.height(24.dp))
 
-            // Название привычки
-            Text(
-                text = "Название",
-                style = MaterialTheme.typography.labelMedium
-            )
-            Spacer(modifier = Modifier.height(8.dp))
+            // Поле названия
             OutlinedTextField(
                 value = title,
                 onValueChange = { title = it },
-                placeholder = { Text("Например, Утренняя медитация") },
+                label = { Text("Название") },
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(16.dp),
                 singleLine = true
             )
 
-            Spacer(modifier = Modifier.height(24.dp))
-
-            // Частота
-            Text(
-                text = "Частота",
-                style = MaterialTheme.typography.labelMedium
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-            Row(
+            // Выбор частоты
+            OutlinedTextField(
+                value = frequency,
+                onValueChange = { frequency = it },
+                label = { Text("Частота") },
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(12.dp)
-            ) {
-                FilterChip(
-                    selected = frequency == "daily",
-                    onClick = { frequency = "daily" },
-                    label = { Text("Ежедневно") },
-                    shape = RoundedCornerShape(12.dp),
-                    colors = FilterChipDefaults.filterChipColors(
-                        selectedContainerColor = PrimaryTeal
-                    )
-                )
-                FilterChip(
-                    selected = frequency == "weekly",
-                    onClick = { frequency = "weekly" },
-                    label = { Text("Еженедельно") },
-                    shape = RoundedCornerShape(12.dp),
-                    colors = FilterChipDefaults.filterChipColors(
-                        selectedContainerColor = PrimaryTeal
-                    )
-                )
-            }
-
-            Spacer(modifier = Modifier.height(24.dp))
-
-            // Заметка
-            Text(
-                text = "Заметка",
-                style = MaterialTheme.typography.labelMedium
+                shape = RoundedCornerShape(16.dp),
+                readOnly = true
             )
-            Spacer(modifier = Modifier.height(8.dp))
+
+            // Поле заметки
             OutlinedTextField(
                 value = note,
                 onValueChange = { note = it },
-                placeholder = { Text("Зачем это важно для вас?") },
+                label = { Text("Заметка (необязательно)") },
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(120.dp),
@@ -114,29 +71,41 @@ fun CreateHabitScreen(
 
             Spacer(modifier = Modifier.weight(1f))
 
-            // Кнопка сохранения
+            // Кнопки
             Button(
                 onClick = {
                     if (title.isNotBlank()) {
-                        // TODO: Сохранить привычку через ViewModel
-                        onSave()
+                        onSave(title, frequency, note)
                     }
                 },
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(56.dp),
                 shape = RoundedCornerShape(16.dp),
-                enabled = title.isNotBlank(),
                 colors = ButtonDefaults.buttonColors(
                     containerColor = PrimaryTeal
-                )
+                ),
+                enabled = title.isNotBlank()
             ) {
-                Icon(Icons.Default.Add, contentDescription = null)
-                Spacer(modifier = Modifier.width(8.dp))
                 Text(
                     text = "Создать",
-                    style = MaterialTheme.typography.labelMedium,
-                    fontSize = MaterialTheme.typography.bodyLarge.fontSize
+                    style = MaterialTheme.typography.labelLarge
+                )
+            }
+
+            OutlinedButton(
+                onClick = onBack,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(56.dp),
+                shape = RoundedCornerShape(16.dp),
+                colors = ButtonDefaults.outlinedButtonColors(
+                    contentColor = PrimaryTeal
+                )
+            ) {
+                Text(
+                    text = "Отмена",
+                    style = MaterialTheme.typography.labelLarge
                 )
             }
 

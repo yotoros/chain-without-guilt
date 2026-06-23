@@ -1,28 +1,34 @@
 package com.guiltfreechain.app.data.repository
 
-import com.guiltfreechain.app.data.api.RetrofitClient
 import com.guiltfreechain.app.data.model.Habit
 import com.guiltfreechain.app.data.model.Log
 import com.guiltfreechain.app.data.model.Rating
 import com.guiltfreechain.app.data.model.User
-import java.security.MessageDigest
 
 class HabitRepository {
 
-    private val api = RetrofitClient.api
+    // Хранилище в памяти (заглушка)
+    private val users = mutableListOf<User>()
+    private val habits = mutableListOf<Habit>()
+    private var nextUserId = 1
+    private var nextHabitId = 1
 
-    // ===== АВТОРИЗАЦИЯ =====
-
+    // Авторизация
     suspend fun registerUser(name: String, email: String, password: String): Result<User> {
         return try {
-            val passwordHash = hashPassword(password)
-            val user = User(name = name, email = email, passwordHash = passwordHash)
-            val response = api.createUser(user)
-            if (response.isSuccessful && response.body() != null) {
-                Result.success(response.body()!!)
-            } else {
-                Result.failure(Exception("Ошибка регистрации: ${response.message()}"))
+            // Проверка что email не занят
+            if (users.any { it.email == email }) {
+                return Result.failure(Exception("Пользователь с таким email уже существует"))
             }
+
+            val user = User(
+                id = nextUserId++,
+                name = name,
+                email = email,
+                password = password
+            )
+            users.add(user)
+            Result.success(user)
         } catch (e: Exception) {
             Result.failure(e)
         }
@@ -30,10 +36,9 @@ class HabitRepository {
 
     suspend fun loginUser(email: String, password: String): Result<User> {
         return try {
-            val passwordHash = hashPassword(password)
-            val response = api.getUser(email, passwordHash)
-            if (response.isSuccessful && response.body() != null && response.body()!!.isNotEmpty()) {
-                Result.success(response.body()!!.first())
+            val user = users.find { it.email == email && it.password == password }
+            if (user != null) {
+                Result.success(user)
             } else {
                 Result.failure(Exception("Неверный email или пароль"))
             }
@@ -42,131 +47,57 @@ class HabitRepository {
         }
     }
 
-    // ===== ПРИВЫЧКИ =====
-
-    suspend fun getHabits(userId: Int): Result<List<Habit>> {
+    // Привычки
+    suspend fun createHabit(userId: Int, title: String, frequency: String, note: String): Result<Habit> {
         return try {
-            val response = api.getHabits(userId)
-            if (response.isSuccessful) {
-                Result.success(response.body() ?: emptyList())
-            } else {
-                Result.failure(Exception("Ошибка получения привычек"))
-            }
+            val habit = Habit(
+                id = nextHabitId++,
+                userId = userId,
+                title = title,
+                frequency = frequency,
+                note = note,
+                currentRating = 0f
+            )
+            habits.add(habit)
+            Result.success(habit)
         } catch (e: Exception) {
             Result.failure(e)
         }
     }
 
-    suspend fun createHabit(habit: Habit): Result<Habit> {
+    suspend fun getUserHabits(userId: Int): Result<List<Habit>> {
         return try {
-            val response = api.createHabit(habit)
-            if (response.isSuccessful && response.body() != null) {
-                Result.success(response.body()!!)
-            } else {
-                Result.failure(Exception("Ошибка создания привычки"))
-            }
+            val userHabits = habits.filter { it.userId == userId }
+            Result.success(userHabits)
         } catch (e: Exception) {
             Result.failure(e)
         }
     }
 
-    suspend fun updateHabit(habitId: Int, habit: Habit): Result<Habit> {
+    suspend fun updateHabitRating(habitId: Int, rating: Float): Result<Rating> {
         return try {
-            val response = api.updateHabit(habitId, habit)
-            if (response.isSuccessful && response.body() != null) {
-                Result.success(response.body()!!)
-            } else {
-                Result.failure(Exception("Ошибка обновления привычки"))
+            val habit = habits.find { it.id == habitId }
+            if (habit != null) {
+                habit.currentRating = rating
             }
+            Result.success(Rating(habitId = habitId, rating = rating))
         } catch (e: Exception) {
             Result.failure(e)
         }
     }
 
-    suspend fun deleteHabit(habitId: Int): Result<Unit> {
+    suspend fun logHabit(habitId: Int, completed: Boolean, note: String): Result<Log> {
         return try {
-            val response = api.deleteHabit(habitId)
-            if (response.isSuccessful) {
-                Result.success(Unit)
-            } else {
-                Result.failure(Exception("Ошибка удаления привычки"))
-            }
+            val log = Log(
+                id = 0,
+                habitId = habitId,
+                completed = completed,
+                note = note,
+                date = System.currentTimeMillis()
+            )
+            Result.success(log)
         } catch (e: Exception) {
             Result.failure(e)
-        }
-    }
-
-    // ===== ЛОГИ (ОТМЕТКИ) =====
-
-    suspend fun createLog(log: Log): Result<Log> {
-        return try {
-            val response = api.createLog(log)
-            if (response.isSuccessful && response.body() != null) {
-                Result.success(response.body()!!)
-            } else {
-                Result.failure(Exception("Ошибка создания записи"))
-            }
-        } catch (e: Exception) {
-            Result.failure(e)
-        }
-    }
-
-    suspend fun getLogs(habitId: Int): Result<List<Log>> {
-        return try {
-            val response = api.getLogs(habitId)
-            if (response.isSuccessful) {
-                Result.success(response.body() ?: emptyList())
-            } else {
-                Result.failure(Exception("Ошибка получения логов"))
-            }
-        } catch (e: Exception) {
-            Result.failure(e)
-        }
-    }
-
-    // ===== РЕЙТИНГИ =====
-
-    suspend fun createRating(rating: Rating): Result<Rating> {
-        return try {
-            val response = api.createRating(rating)
-            if (response.isSuccessful && response.body() != null) {
-                Result.success(response.body()!!)
-            } else {
-                Result.failure(Exception("Ошибка создания рейтинга"))
-            }
-        } catch (e: Exception) {
-            Result.failure(e)
-        }
-    }
-
-    suspend fun getRatings(habitId: Int): Result<List<Rating>> {
-        return try {
-            val response = api.getRatings(habitId)
-            if (response.isSuccessful) {
-                Result.success(response.body() ?: emptyList())
-            } else {
-                Result.failure(Exception("Ошибка получения рейтингов"))
-            }
-        } catch (e: Exception) {
-            Result.failure(e)
-        }
-    }
-
-    // ===== ВСПОМОГАТЕЛЬНЫЕ МЕТОДЫ =====
-
-    private fun hashPassword(password: String): String {
-        val md = MessageDigest.getInstance("SHA-256")
-        val digest = md.digest(password.toByteArray())
-        return digest.joinToString("") { "%02x".format(it) }
-    }
-
-    fun calculateNewRating(currentRating: Float, completed: Boolean): Float {
-        return if (completed) {
-            // При выполнении - небольшой бонус (максимум 100)
-            (currentRating + 2f).coerceAtMost(100f)
-        } else {
-            // При пропуске - снижение на 16%
-            (currentRating - 16f).coerceAtLeast(0f)
         }
     }
 }
